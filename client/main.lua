@@ -3,7 +3,8 @@ local PlayerData = QBCore.Functions.GetPlayerData()
 
 -- Variabels
 local busBlip, InDelBus, route, max, stationsZone, LastMisson, MissionBlip = nil, false, 1, #Config.Stations, false, nil, nil
-local passanger = 0
+local passenger = 0
+local total_price = 0
 
 -- Function 
 
@@ -23,10 +24,13 @@ GetMissionLocation = function()
     if route == "finish" then
         SetBlipRoute(busBlip, true)
         SetBlipRouteColour(busBlip, 3)
-        
+        passenger = passenger + math.random(Config.MaxPersonEnterBus)
+        print(passenger)
+        total_price = Config.TicketPrice * passenger
         meterData = {
             ["nextstation"] = 'Back To Depot',
-            ["TotalPrice"] = 0
+            ["TotalPrice"] = total_price,
+            ["passenger"] = passenger
         } 
     
         SendNUIMessage({
@@ -211,10 +215,13 @@ takepassanger = function()
     nextStop()
     local MissionData = GetMissionLocation()
     if route == "finish" then return end
+    passenger = passenger + math.random(Config.MaxPersonEnterBus)
+    total_price = Config.TicketPrice * passenger
     if Config.Debug then print(json.encode(MissionData)) end
     local meterData = {
         ["nextstation"] = MissionData[1],
-        ["TotalPrice"] = 0
+        ["TotalPrice"] = total_price,
+        ["passenger"] = passenger
     }
     SendNUIMessage({
         action = "updateMeter",

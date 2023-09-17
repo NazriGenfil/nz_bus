@@ -5,7 +5,7 @@ lib.callback.register('nz_busjob:server:spawnBus', function(source, model, coord
     if not netId or netId == 0 then return end
     local veh = NetworkGetEntityFromNetworkId(netId)
     if not veh or veh == 0 then return end
-
+    
     if Config.Debug then print(netId, veh) end
     local plate = "BUS " .. math.random(100, 999)
     SetVehicleNumberPlateText(veh, plate)
@@ -13,3 +13,5 @@ lib.callback.register('nz_busjob:server:spawnBus', function(source, model, coord
     if Config.Debug then print("Spawnning car...") end
     return netId
 end)
+
+if Config.Debug then print("Server Side Running...") end

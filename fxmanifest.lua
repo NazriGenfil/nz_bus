@@ -16,9 +16,7 @@ client_scripts {
 }
     
 
-server_scripts {
-    'server/*.lua'
-}
+server_script 'server/*.lua'
 
 files {
 	'html/meter.css',

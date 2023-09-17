@@ -2,13 +2,13 @@ let meterStarted = false;
 
 const updateMeter = (meterData) => {
   $("#total-price").html("$ " + meterData.TotalPrice);
-  $("#passanger").html(meterData.passanger);
+  $("#passenger").html(meterData.passenger);
   $("#halte").html(meterData.nextstation);
 };
 
 const resetMeter = () => {
   $("#total-price").html("$ 0.00");
-  $("#passanger").html("0.00 mi");
+  $("#passenger").html("0.00 mi");
 };
 
 const toggleMeter = (enabled) => {

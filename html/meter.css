@@ -49,7 +49,7 @@
     position: absolute;
 }
 
-#passanger {
+#passenger {
     color: rgb(255, 153, 57);
     font-family: 'Lato';
     font-weight: bold;
@@ -61,7 +61,7 @@
     position: absolute;
 }
 
-#passanger-label {
+#passenger-label {
     color: rgba(255, 255, 255, 0.75);
     font-family: 'Lato';
     font-weight: lighter;

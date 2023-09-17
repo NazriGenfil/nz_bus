@@ -7,7 +7,7 @@ Config.FuelSystem = "ox" -- only ox for now
 Config.UseJob = false -- false for now
 
 Config.TicketPrice = 1000
-Config.MaxPersonEnterBus = 1
+Config.MaxPersonEnterBus = 5
 
 Config.AllowedVehicles = "bus"
 
