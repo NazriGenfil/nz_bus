@@ -1,10 +1,9 @@
 let meterStarted = false;
 
 const updateMeter = (meterData) => {
-  $("#total-price").html("$ " + meterData.currentFare.toFixed(2));
-  $("#passanger").html(
-    (meterData.distanceTraveled).toFixed(2) + " mi"
-  );
+  $("#total-price").html("$ " + meterData.TotalPrice);
+  $("#passanger").html(meterData.passanger);
+  $("#halte").html(meterData.nextstation);
 };
 
 const resetMeter = () => {
@@ -46,7 +45,7 @@ const meterToggle = () => {
 
 const openMeter = (meterData) => {
   $(".container").fadeIn(150);
-  $("#halte").html(meterData.defaultPrice);
+  $("#halte").html(meterData.nextstation);
 };
 
 const closeMeter = () => {

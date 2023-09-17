@@ -10,5 +10,6 @@ lib.callback.register('nz_busjob:server:spawnBus', function(source, model, coord
     local plate = "BUS " .. math.random(100, 999)
     SetVehicleNumberPlateText(veh, plate)
     TriggerClientEvent('vehiclekeys:client:SetOwner', source, plate)
+    if Config.Debug then print("Spawnning car...") end
     return netId
 end)

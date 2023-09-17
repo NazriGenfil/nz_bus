@@ -22,33 +22,46 @@ GetMissionLocation = function()
     if route == "finish" then
         SetBlipRoute(busBlip, true)
         SetBlipRouteColour(busBlip, 3)
-    end
-    if Config.Debug then print(Config.Stations[route][2]) end
-        MissionBlip = AddBlipForCoord(Config.Stations[route][2].x, Config.Stations[route][2].y, Config.Stations[route][2].z)
-        SetBlipColour(MissionBlip, 3)
-        SetBlipRoute(MissionBlip, true)
-        SetBlipRouteColour(MissionBlip, 3)
-        LastMisson = route
-        local shownTextUI = false
-        DeliverZone = lib.zones.sphere({
-            name = "missions",
-            coords = Config.Stations[route][2].xyz,
-            radius = 7,
-            debug = Config.Debug,
-            onEnter = function()
-                if Config.Debug then print("Di dalam zona pengambilan penumpang") end
-                stationsZone = true
-                if not shownTextUI then
-                    lib.showTextUI("[E] - Bus Stop")
-                    shownTextUI = true
-                end
-            end,
-            onExit = function()
-                lib.hideTextUI()
-                shownTextUI = false
-                stationsZone = false
-            end
+        
+        meterData = {
+            ["nextstation"] = 'Back To Depot',
+            ["TotalPrice"] = 0
+        } 
+    
+        SendNUIMessage({
+            action = "updateMeter",
+            meterData = meterData
         })
+        lib.hideTextUI()
+        return
+    end
+    if Config.Debug and route ~= "finish" then print(Config.Stations[route][2]) end
+    MissionBlip = AddBlipForCoord(Config.Stations[route][2].x, Config.Stations[route][2].y, Config.Stations[route][2].z)
+    SetBlipColour(MissionBlip, 3)
+    SetBlipRoute(MissionBlip, true)
+    SetBlipRouteColour(MissionBlip, 3)
+    LastMisson = route
+    local shownTextUI = false
+    DeliverZone = lib.zones.sphere({
+        name = "missions",
+        coords = Config.Stations[route][2].xyz,
+        radius = 7,
+        debug = Config.Debug,
+        onEnter = function()
+            if Config.Debug then print("Di dalam zona pengambilan penumpang") end
+            stationsZone = true
+            if not shownTextUI then
+                lib.showTextUI("[E] - Bus Stop")
+                shownTextUI = true
+            end
+        end,
+        onExit = function()
+            lib.hideTextUI()
+            shownTextUI = false
+            stationsZone = false
+        end
+    })
+    return Config.Stations[route]
 end
 
 updateBlip = function()
@@ -92,19 +105,27 @@ spawnBus = function()
     local coords = Config.Location
     local CanSpawn = IsSpawnPointClear(coords, 2.0)
     if CanSpawn then
+        if Config.Debug then print("Spawning...") end
         local netId = lib.callback.await('nz_busjob:server:spawnBus', false, Config.AllowedVehicles, Config.Location)
         local veh = NetToVeh(netId)
         SetVehicleFuelLevel(veh, 100.0)
         SetVehicleEngineOn(veh, true, true, false)
+        if Config.Debug then print(netId,veh) end
+
+        local MissionData = GetMissionLocation()
+        if Config.Debug then print(MissionData[1]) end
+        local meterData = {
+            ["nextstation"] = MissionData[1]
+        }
+        
         SendNUIMessage({
             action = "openMeter",
             toggle = true,
-            meterData = Config.Meter
+            meterData = meterData
         })
         SendNUIMessage({
             action = "toggleMeter"
         })
-        GetMissionLocation()
     else
         QBCore.Functions.Notify("Tidak dapat spawn bus", "error")
     end
@@ -221,13 +242,25 @@ end, false)
 RegisterKeyMapping('+bus_delveh', 'Bus Job', 'keyboard', 'e')
 
 RegisterCommand('+bus_takepassangger', function()
-    if  stationsZone then
-        DeliverZone:remove()
-        DeliverZone = nil
-        nextStop()
-        GetMissionLocation()
-        lib.hideTextUI()
-    end
+    if Config.Debug then print(stationsZone) end
+    if not stationsZone and route == "finish" then return end
+    lib.hideTextUI()
+    stationsZone = false
+
+    DeliverZone:remove()
+    DeliverZone = nil
+    nextStop()
+    local MissionData = GetMissionLocation()
+    if route == "finish" then return end
+    if Config.Debug then print(json.encode(MissionData)) end
+    local meterData = {
+        ["nextstation"] = MissionData[1],
+        ["TotalPrice"] = 0
+    }
+    SendNUIMessage({
+        action = "updateMeter",
+        meterData = meterData
+    })
 end, false)
 RegisterKeyMapping('+bus_takepassangger', 'Bus Job', 'keyboard', 'e')
 
