@@ -186,7 +186,7 @@ delBus = function()
         radius = 7,
         debug = Config.Debug,
         onEnter = function()
-            if isPlayerVehicleABus then 
+            if isPlayerVehicleABus() then 
                 if not shownTextUI then
                     lib.showTextUI("[E] - Job Vehicles")
                     shownTextUI = true
@@ -205,6 +205,7 @@ delBus = function()
 end
 
 takepassanger = function()
+    if not stationsZone then return end
     if Config.Debug then print(stationsZone) end
     if not stationsZone and route == "finish" then return end
     lib.hideTextUI()
