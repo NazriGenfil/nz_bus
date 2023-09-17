@@ -14,4 +14,9 @@ lib.callback.register('nz_busjob:server:spawnBus', function(source, model, coord
     return netId
 end)
 
+lib.callback.register('nz_busjob:server:givemoney', function(source, value)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(source)
+    Player.Functions.AddMoney(Config.MoneyType, value, "Bus Paycheck")
+end)
 if Config.Debug then print("Server Side Running...") end
