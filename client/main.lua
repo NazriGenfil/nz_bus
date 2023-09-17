@@ -53,6 +53,7 @@ GetMissionLocation = function()
         radius = 7,
         debug = Config.Debug,
         onEnter = function()
+            if not isPlayerVehicleABus() then return end
             if Config.Debug then print("Di dalam zona pengambilan penumpang") end
             stationsZone = true
             if not shownTextUI then
@@ -137,8 +138,6 @@ spawnBus = function()
 end
 
 spawnPed = function()
-    if Config.Debug then print("Spawning ped object") end
-    
     RequestModel(Config.Ped.model)
         while not HasModelLoaded(Config.Ped.model) do
             Wait(0)
@@ -149,7 +148,8 @@ spawnPed = function()
     SetEntityInvincible(ped, true)
     SetBlockingOfNonTemporaryEvents(ped, true)
     TaskStartScenarioInPlace(ped, Config.Ped.scenario, true, true)
-
+    if Config.Debug then print("Spawning ped object") end
+    
     exports.ox_target:addLocalEntity(ped, { {
         name = 'MainPed',
         icon = 'fa-solid fa-car-side',
@@ -206,7 +206,7 @@ delBus = function()
 end
 
 takepassanger = function()
-    if not stationsZone then return end
+    if not stationsZone or not isPlayerVehicleABus() then return end
     if Config.Debug then print(stationsZone) end
     if not stationsZone and route == "finish" then return end
     lib.hideTextUI()
