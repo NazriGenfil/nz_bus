@@ -9,7 +9,7 @@ Config.UseJob = false -- false for now
 Config.TicketPrice = 1000
 Config.MaxPersonEnterBus = 5
 
-Config.AllowedVehicles = "bus"
+Config.AllowedVehicles = "BUS" -- Must be Capitalized
 
 Config.Location = vec4(462.22, -641.15, 28.45, 175.0)
 

@@ -166,7 +166,8 @@ isPlayerVehicleABus = function()
     if not cache.vehicle then return false end
     local veh = GetEntityModel(cache.vehicle)
 
-    if veh == Config.AllowedVehicles then
+    if Config.Debug then print(GetDisplayNameFromVehicleModel(veh), Config.AllowedVehicles) end
+    if GetDisplayNameFromVehicleModel(veh) == Config.AllowedVehicles then
         return true
     end
 
