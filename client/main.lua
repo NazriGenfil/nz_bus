@@ -3,6 +3,7 @@ local PlayerData = QBCore.Functions.GetPlayerData()
 
 -- Variabels
 local busBlip, InDelBus, route, max, stationsZone, LastMisson, MissionBlip = nil, false, 1, #Config.Stations, false, nil, nil
+local passanger = 0
 
 -- Function 
 
@@ -199,6 +200,28 @@ delBus = function()
     
 end
 
+takepassanger = function()
+    if Config.Debug then print(stationsZone) end
+    if not stationsZone and route == "finish" then return end
+    lib.hideTextUI()
+    stationsZone = false
+
+    DeliverZone:remove()
+    DeliverZone = nil
+    nextStop()
+    local MissionData = GetMissionLocation()
+    if route == "finish" then return end
+    if Config.Debug then print(json.encode(MissionData)) end
+    local meterData = {
+        ["nextstation"] = MissionData[1],
+        ["TotalPrice"] = 0
+    }
+    SendNUIMessage({
+        action = "updateMeter",
+        meterData = meterData
+    })
+end
+
 -- Events
 AddEventHandler('onResourceStart', function(resourceName)
     -- handles script restarts
@@ -242,25 +265,7 @@ end, false)
 RegisterKeyMapping('+bus_delveh', 'Bus Job', 'keyboard', 'e')
 
 RegisterCommand('+bus_takepassangger', function()
-    if Config.Debug then print(stationsZone) end
-    if not stationsZone and route == "finish" then return end
-    lib.hideTextUI()
-    stationsZone = false
-
-    DeliverZone:remove()
-    DeliverZone = nil
-    nextStop()
-    local MissionData = GetMissionLocation()
-    if route == "finish" then return end
-    if Config.Debug then print(json.encode(MissionData)) end
-    local meterData = {
-        ["nextstation"] = MissionData[1],
-        ["TotalPrice"] = 0
-    }
-    SendNUIMessage({
-        action = "updateMeter",
-        meterData = meterData
-    })
+    takepassanger()
 end, false)
 RegisterKeyMapping('+bus_takepassangger', 'Bus Job', 'keyboard', 'e')
 
