@@ -267,10 +267,14 @@ RegisterKeyMapping('+bus_takepassangger', 'Bus Job', 'keyboard', 'e')
 -- debug
 RegisterCommand("debug", function(source, args, rawCommand)
     if Config.debug then return end
+    local meterData = {
+        ["nextstation"] = "DEBUG"
+    }
+    
     SendNUIMessage({
         action = "openMeter",
         toggle = true,
-        meterData = Config.Meter
+        meterData = meterData
     })
     SendNUIMessage({
         action = "toggleMeter"

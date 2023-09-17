@@ -23,9 +23,3 @@ Config.Stations = {
     [1] = { "Halte 1", vec4(308.3, -768.78, 29.31, 349.57) },
     [2] = { "Halte 2", vec4(114.11, -785.43, 31.38, 63.64) },
 }
-
--- TEMP
-Config.Meter = {
-    ["defaultPrice"] = 0, -- price per mile
-    ["startingPrice"] = 0  -- static starting price
-}
