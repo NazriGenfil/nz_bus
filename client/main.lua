@@ -269,10 +269,10 @@ RegisterCommand('+bus_delveh', function()
             action = "openMeter",
             toggle = false
         })
+        lib.callback.await('nz_busjob:server:givemoney', false, total_price)
         route = 1
         total_price = 0
         passenger = 0
-        lib.callback.await('nz_busjob:server:givemoney', false, total_price)
     end
 end, false)
 RegisterKeyMapping('+bus_delveh', 'Bus Job', 'keyboard', 'e')
