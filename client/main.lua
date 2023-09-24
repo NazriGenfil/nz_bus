@@ -5,7 +5,7 @@ local math = lib.math
 local busBlip, InDelBus, route, max, stationsZone, LastMisson, MissionBlip = nil, false, 1, #Config.Stations, false, nil, nil
 local passenger = 0
 local total_price = 0
-
+local MissionData = nil
 -- Function 
 
 nextStop = function()
@@ -118,7 +118,7 @@ spawnBus = function()
         SetVehicleEngineOn(veh, true, true, false)
         if Config.Debug then print(netId,veh) end
 
-        local MissionData = GetMissionLocation()
+        MissionData = GetMissionLocation()
         if Config.Debug then print(MissionData[1]) end
         local meterData = {
             ["nextstation"] = MissionData[1]
@@ -215,7 +215,7 @@ takepassanger = function()
     DeliverZone:remove()
     DeliverZone = nil
     nextStop()
-    local MissionData = GetMissionLocation()
+    MissionData = GetMissionLocation()
     if route == "finish" then return end
     passenger = passenger + math.random(Config.MaxPersonEnterBus)
     total_price = Config.TicketPrice * passenger
@@ -273,6 +273,7 @@ RegisterCommand('+bus_delveh', function()
         route = 1
         total_price = 0
         passenger = 0
+        MissionData = nil
     end
 end, false)
 RegisterKeyMapping('+bus_delveh', 'Bus Job', 'keyboard', 'e')
