@@ -11,14 +11,10 @@ const resetMeter = () => {
   $("#passenger").html("0.00 mi");
 };
 
-const toggleMeter = (enabled) => {
-  if (enabled) {
-    $(".toggle-meter-btn").html("<p>Started</p>");
-    $(".toggle-meter-btn p").css({ color: "rgb(51, 160, 37)" });
-  } else {
-    $(".toggle-meter-btn").html("<p>Stopped</p>");
-    $(".toggle-meter-btn p").css({ color: "rgb(231, 30, 37)" });
-  }
+const toggleMeter = () => {
+  $(".toggle-meter-btn").html("<p>Started</p>");
+  $(".toggle-meter-btn p").css({ color: "rgb(51, 160, 37)" });
+
 };
 
 const meterToggle = () => {
@@ -46,6 +42,8 @@ const meterToggle = () => {
 const openMeter = (meterData) => {
   $(".container").fadeIn(150);
   $("#halte").html(meterData.nextstation);
+  $("#total-price").html("$ " + meterData.TotalPrice);
+  $("#passenger").html(meterData.passenger);
 };
 
 const closeMeter = () => {

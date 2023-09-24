@@ -119,9 +119,11 @@ spawnBus = function()
         if Config.Debug then print(netId,veh) end
 
         MissionData = GetMissionLocation()
-        if Config.Debug then print(MissionData[1]) end
+        if Config.Debug then print(MissionData[1], total_price, passenger) end
         local meterData = {
-            ["nextstation"] = MissionData[1]
+            ["nextstation"] = MissionData[1],
+            ["TotalPrice"] = total_price,
+            ["passenger"] = passenger
         }
         
         SendNUIMessage({
@@ -285,7 +287,7 @@ RegisterKeyMapping('+bus_takepassangger', 'Bus Job', 'keyboard', 'e')
 
 -- debug
 RegisterCommand("debug", function(source, args, rawCommand)
-    if Config.debug then return end
+    if not Config.debug then return end
     local meterData = {
         ["nextstation"] = "DEBUG"
     }
